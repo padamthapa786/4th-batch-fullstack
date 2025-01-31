@@ -1,8 +1,13 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router";
 
 const SignUp = () => {
+  // asko kam chai redirect garne 
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -12,18 +17,23 @@ const SignUp = () => {
 
   function submitForm(value) {
     console.log(value);
-    const data  = {...value}
-    delete data['confirmPassword']
-    sendData(data)
+    const data = { ...value };
+    delete data["confirmPassword"];
+    sendData(data);
   }
 
   async function sendData(data) {
-    const res = await axios.post("http://localhost:3000/user",data);
-    console.log(res);
-    
-    
+    try {
+      const res = await axios.post("http://localhost:3000/user", data);
+      console.log(res);
+      toast.success(res?.data?.message);
+      localStorage.setItem("token", res?.data?.token);
+      navigate("/")
+    } catch (error) {
+      console.log(error?.response?.data?.message);
+      toast.error(error?.response?.data?.message);
+    }
   }
-
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
@@ -56,6 +66,7 @@ const SignUp = () => {
             >
               Email
             </label>
+            
             <input
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="email"

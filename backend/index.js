@@ -8,6 +8,13 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+//euta matra rerouces update garnu xa vane id chainxa
+//get request to user list /signle user 
+//post request user create (signup , ) and form submission (login , kei create)
+// put request edit/update user details () //id
+//patch request edit/update specific user details (euta matra) /id
+//delete request delete the resources  /id
+//get post,put path ,delete
 app.get("/user", (req, res) => {
   res.json({
     id: 1,
